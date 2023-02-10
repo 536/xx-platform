@@ -6,7 +6,7 @@ from django.views import View
 
 from api.models import Term
 
-from .response import error, success
+from .utils.response import error, success
 
 
 class IndexView(View):
