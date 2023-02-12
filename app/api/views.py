@@ -4,8 +4,7 @@ from django.conf import settings
 from django.http import HttpRequest, JsonResponse
 from django.views import View
 
-from api.models import Term
-
+from .models import Parlance
 from .utils.response import error, success
 
 
@@ -14,7 +13,7 @@ class IndexView(View):
         return JsonResponse(success())
 
     def post(self, request: HttpRequest):
-        if request.META['REMOTE_ADDR'] in settings.ALLOWED_REMOTE_ADDRESSES:
+        if request.META["REMOTE_ADDR"] in settings.ALLOWED_REMOTE_ADDRESSES:
             try:
                 data: dict = json.loads(request.body)
             except json.JSONDecodeError:
@@ -23,7 +22,7 @@ class IndexView(View):
         return JsonResponse(error(1, result=dict(data)))
 
 
-class TermView(View):
+class ParlanceView(View):
     def get(self, request: HttpRequest):
         return JsonResponse(
             success(
@@ -35,7 +34,7 @@ class TermView(View):
                         zh=term.zh,
                         en=term.en,
                     )
-                    for term in Term.objects.all()
+                    for term in Parlance.objects.all()
                 ]
             )
         )
@@ -46,7 +45,7 @@ class TermView(View):
         except json.JSONDecodeError:
             return JsonResponse(error())
 
-        term = Term.objects.create(**d)
+        term = Parlance.objects.create(**d)
         return JsonResponse(
             success(
                 result={
@@ -61,20 +60,20 @@ class TermView(View):
 
     def put(self, request: HttpRequest):
         d: dict = json.loads(request.body)
-        if 'id' in d:
-            _id = d.pop('id')
-            Term.objects.filter(id=_id).update(**d)
+        if "id" in d:
+            _id = d.pop("id")
+            Parlance.objects.filter(id=_id).update(**d)
         else:
-            Term.objects.update(**d)
+            Parlance.objects.update(**d)
 
         return JsonResponse(success())
 
     def delete(self, request: HttpRequest):
         d: dict = json.loads(request.body)
-        if 'id' in d:
-            _id = d.pop('id')
-            Term.objects.filter(id=_id).delete()
+        if "id" in d:
+            _id = d.pop("id")
+            Parlance.objects.filter(id=_id).delete()
         else:
-            Term.objects.filter(**d).delete()
+            Parlance.objects.filter(**d).delete()
 
         return JsonResponse(success())

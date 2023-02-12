@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 from typing import Any
 
-
 errors = {
-    0: 'success',
-    1: 'common error',
-    200: 'http success',
-    400: 'client error',
-    500: 'server error',
+    0: "success",
+    1: "common error",
+    200: "http success",
+    400: "client error",
+    500: "server error",
 }
 
 
